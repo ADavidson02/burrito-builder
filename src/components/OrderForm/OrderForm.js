@@ -7,18 +7,23 @@ class OrderForm extends Component {
     this.state = {
       name: '',
       ingredients: [],
-      error: false
+      errorItem: false,
+      errorName: false
     };
   }
 
 
   handleSubmit = e => {
     e.preventDefault();
-    if(!this.state.ingredients.length || !this.state.name.length) {
-      this.setState({error: true})
+    if(!this.state.ingredients.length) {
+      return this.setState({errorItem: true})
+    } else if( !this.state.name.length) {
+      return this.setState({errorName: true})
     }
+    
     console.log(this.state.name, this.state.ingredients)
     this.clearInputs();
+    this.setState({errorItem: false, errorName: false})
   }
 
   clearInputs = () => {
@@ -29,11 +34,16 @@ class OrderForm extends Component {
     this.setState({name: event.target.value})
   }
 
+  handleIngredientChange = event => {
+    event.preventDefault()
+    this.setState({ingredients: [...this.state.ingredients, event.target.value]})
+  }
+
   render() {
     const possibleIngredients = ['beans', 'steak', 'carnitas', 'sofritas', 'lettuce', 'queso fresco', 'pico de gallo', 'hot sauce', 'guacamole', 'jalapenos', 'cilantro', 'sour cream'];
     const ingredientButtons = possibleIngredients.map(ingredient => {
       return (
-        <button key={ingredient} name={ingredient} onClick={e => this.handleIngredientChange(e)}>
+        <button key={ingredient} name={ingredient} value={ingredient} onClick={e => this.handleIngredientChange(e)}>
           {ingredient}
         </button>
       )
@@ -56,7 +66,8 @@ class OrderForm extends Component {
         <button onClick={e => this.handleSubmit(e)}>
           Submit Order
         </button>
-        {this.state.error === true && <h2> Please add at least one ingredient to your burrito</h2>}
+        {this.state.errorItem === true && <h2>Please add at least one ingredient to your burrito</h2>}
+        {this.state.errorName === true && <h2>Please add a name to your order</h2>}
       </form>
     )
   }
