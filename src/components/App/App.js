@@ -15,7 +15,6 @@ class App extends Component {
   componentDidMount= async () =>  {
       const allOrders = await getOrders()
       this.setState({orders: allOrders.orders})
-      console.log(this.state.orders)
   }
 
   addOrder = newOrder => {
