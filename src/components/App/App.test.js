@@ -21,4 +21,21 @@ describe('App', () => {
     await waitFor(() => expect(screen.getByText('Steph')))
   }),
 
+  it("should clear the form when the order is submitted", () => {
+    render(
+      <App />
+    );
+    const steakButton = screen.getByText("steak");
+    const beansButton = screen.getByText("beans");
+    const submitButton = screen.getByText("Submit Order");
+
+    userEvent.click(steakButton);
+    userEvent.click(beansButton);
+    userEvent.type(screen.getByPlaceholderText("Name"), "Jo");
+    userEvent.click(submitButton);
+
+    expect(screen.getByPlaceholderText("Name").value).toEqual("");
+    expect(screen.getByText('Order: Nothing selected')).toBeInTheDocument();
+    expect(screen.getByText('Jo')).toBeInTheDocument();
+  });
 })
