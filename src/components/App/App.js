@@ -16,7 +16,6 @@ class App extends Component {
       const allOrders = await getOrders()
       this.setState({orders: allOrders.orders})
       console.log(this.state.orders)
-      // .catch(err => console.error('Error fetching:', err));
   }
 
   addOrder = newOrder => {
